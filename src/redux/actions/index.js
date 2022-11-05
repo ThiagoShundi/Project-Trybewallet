@@ -1,41 +1,22 @@
 // Coloque aqui suas actions
-// import getData from '../../helpers/getData';
 
-export const EMAIL_CHANGE = (email) => ({
+export const emailChange = (email) => ({
   type: 'EMAIL_CHANGE',
   email,
 });
 
-export const DATA_CHANGE = (data) => ({
-  type: 'DATA_CHANGE',
-  data,
+export const expenseChange = (expenses) => ({
+  type: 'EXPENSES_CHANGE',
+  expenses,
 });
 
-// const getApiData = (apidata) => ({
-//   type: 'API_DATA',
-//   apidata,
-// });
-
-// export function fetchData() {
-//   return async (dispatch) => {
-//     try {
-//       const response = await getData();
-//       console.log(response);
-//       dispatch(getApiData(response));
-//     } catch (e) {
-//       console.erro(e.message);
-//     }
-//   };
-// }
-
-function getApiData(currencies) {
+export function getApiDataCurrencies(currencies) {
   return {
-    type: 'API_DATA',
+    type: 'API_DATA_CURRENCIES',
     currencies,
   };
 }
-
-function requestApi() {
+export function requestApi() {
   return { type: 'REQUEST_API' };
 }
 
@@ -46,12 +27,16 @@ function failedRequest(error) {
   };
 }
 
-export function fetchApi() {
+export function fetchApiCurrencies() {
   return (dispatch) => {
     dispatch(requestApi());
     return fetch('https://economia.awesomeapi.com.br/json/all')
       .then((response) => response.json())
-      .then((apidata) => dispatch(getApiData(apidata)))
+      .then((apidata) => {
+        delete apidata.USDT;
+        const currencies = Object.keys(apidata);
+        dispatch(getApiDataCurrencies(currencies));
+      })
       .catch((error) => dispatch(failedRequest(error)));
   };
 }

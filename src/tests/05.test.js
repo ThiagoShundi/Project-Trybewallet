@@ -1,9 +1,22 @@
-// import { screen, waitFor } from '@testing-library/react';
+// import React from 'react';
+// import { screen } from '@testing-library/react';
+// import App from '../App';
+// import Header from '../components/Header';
+// import { renderWithRedux } from './helpers/renderWith';
 
-// describe('1 - Crie as rotas necessárias para a aplicação', () => {
-//   beforeEach(() => {
-//     localStorage.setItem('user', JSON.stringify(defaultUser));
-//     localStorage.setItem('favorite_songs', JSON.stringify([]));
-//     jest.restoreAllMocks();
+// describe('1 - Testando a aplicação', () => {
+//   test('Verificar o arquivo APP.', () => {
+//     renderWithRedux(<App />);
+
+//     const title = screen.findByText('Hello, TrybeWallet!');
+
+//     expect(title).toBeInTheDocument();
+//   });
+//   test('Verificar o arquivo Header.', () => {
+//     renderWithRedux(<Header />);
+
+//     const title = screen.getByText('Total de despesas: ');
+
+//     expect(title).toBeInTheDocument();
 //   });
 // });

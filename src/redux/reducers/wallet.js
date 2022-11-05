@@ -3,17 +3,16 @@
 const INITIAL_STATE = {
   isFetching: false,
   error: '',
-  apidata: '',
-  data: [],
+  expenses: [],
   currencies: [],
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case 'API_DATA':
+  case 'API_DATA_CURRENCIES':
     return {
       ...state,
-      currencies: Object.keys(action.currencies),
+      currencies: action.currencies,
     };
   case 'REQUEST_API':
     return {
@@ -25,10 +24,10 @@ const wallet = (state = INITIAL_STATE, action) => {
       ...state,
       error: action.error,
     };
-  case 'DATA_CHANGE':
+  case 'EXPENSES_CHANGE':
     return {
       ...state,
-      data: [...state.data, action.data],
+      expenses: [...state.expenses, action.expenses],
     };
   default:
     return state;

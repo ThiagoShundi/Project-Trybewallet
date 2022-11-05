@@ -7,23 +7,31 @@ class Header extends Component {
     super();
 
     this.state = {
-      totalSpent: 0,
       exchange: 'BRL',
     };
   }
 
   render() {
-    const { email } = this.props;
-    const { totalSpent, exchange } = this.state;
+    const { email, expenses } = this.props;
+    const { exchange } = this.state;
+
+    const values = expenses.map((exp) => (
+      Number(exp.exchangeRates[exp.currency].ask) * Number(exp.value)
+    ));
+
+    const sumValor = expenses.length !== 0
+      ? (values.reduce((acc, val) => acc + val)).toFixed(2) : 0;
 
     return (
       <>
         <div>TrybeWallet</div>
         <div data-testid="email-field">{ email }</div>
-        <div data-testid="total-field">
-          Total de despesas:
+        <div>
+          Total despesas:
           {' '}
-          { totalSpent }
+          <span data-testid="total-field">
+            { sumValor }
+          </span>
         </div>
         <div data-testid="header-currency-field">{ exchange }</div>
       </>
@@ -33,10 +41,12 @@ class Header extends Component {
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
+  expenses: state.wallet.expenses,
 });
 
 Header.propTypes = {
   email: PropTypes.string.isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.shape({ value: PropTypes.string })).isRequired,
 };
 
 export default connect(mapStateToProps)(Header);

@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchApi, DATA_CHANGE } from '../redux/actions';
+import { fetchApiCurrencies,
+  expenseChange } from '../redux/actions';
 
 class WalletForm extends Component {
   constructor() {
     super();
 
     this.state = {
+      id: 0,
       value: '',
-      currency: '',
       description: '',
-      tag: '',
-      method: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+      exchangeRates: [],
     };
   }
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(fetchApi());
+    dispatch(fetchApiCurrencies());
   }
 
   handleChange = ({ target }) => {
@@ -27,25 +30,30 @@ class WalletForm extends Component {
     });
   };
 
-  handleClick = () => {
-    const { value, description, tag, method, currencies } = this.state;
+  handleClick = async () => {
     const { dispatch } = this.props;
-    dispatch(DATA_CHANGE(value, description, tag, method, currencies));
+    const { id } = this.state;
+
+    const request = await fetch('https://economia.awesomeapi.com.br/json/all');
+    const requestJson = await request.json();
+    delete requestJson.USDT;
+
     this.setState({
+      exchangeRates: requestJson,
+    });
+
+    dispatch(expenseChange({ ...this.state, exchangeRates: requestJson }));
+
+    this.setState({
+      id: id + 1,
       value: '',
-      currency: '',
       description: '',
-      tag: '',
-      method: '',
     });
   };
 
   render() {
     const { value, description, tag, method, currency } = this.state;
     const { currencies } = this.props;
-
-    const newCurriencies = currencies;
-    currencies.splice(1, 1);
 
     return (
       <>
@@ -64,14 +72,14 @@ class WalletForm extends Component {
         <label htmlFor="currencies">
           Moeda:
           <select
-            id="currencies"
-            name="currencies"
+            id="currency"
+            name="currency"
             data-testid="currency-input"
             value={ currency }
             onChange={ this.handleChange }
           >
             {
-              newCurriencies.map((currncy) => (
+              currencies.map((currncy) => (
                 <option value={ currncy } key={ currncy }>{ currncy }</option>
               ))
             }
@@ -137,8 +145,7 @@ const mapStateToProps = (state) => ({
 
 WalletForm.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  currencies: PropTypes.shape.isRequired,
-  // currencies: PropTypes.shape.isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default connect(mapStateToProps)(WalletForm);
