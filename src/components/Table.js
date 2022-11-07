@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { expenseEdit } from '../redux/actions';
 
 class Table extends Component {
-  handleClick = () => {
-    // const { expenses } = this.props;
-    // const select = document.querySelectorAll('.selected');
-    // select.remove();
+  handleClickDelet = (target) => {
+    const { expenses, dispatch } = this.props;
+    const filterExpenses = expenses.filter((del) => del.id !== target);
+    console.log(filterExpenses);
+    dispatch(expenseEdit(filterExpenses));
   };
+
+  handleClickEdit = () => {};
 
   render() {
     const { expenses } = this.props;
@@ -31,8 +35,8 @@ class Table extends Component {
           </thead>
           <tbody>
             {
-              expenses.map((exp, index) => (
-                <tr key={ index }>
+              expenses.map((exp) => (
+                <tr key={ exp.id }>
                   <td>{ exp.description }</td>
                   <td>{ exp.tag }</td>
                   <td>{ exp.method }</td>
@@ -52,12 +56,20 @@ class Table extends Component {
                   <td>Real</td>
                   <td>
                     <button
+                      data-testid="edit-btn"
+                      type="button"
+                      onClick={ this.handleClickEdit }
+                    >
+                      Editar
+                    </button>
+                    <button
                       data-testid="delete-btn"
                       type="button"
-                      onClick={ this.handleClick }
+                      onClick={ () => { this.handleClickDelet(exp.id); } }
                     >
                       Excluir
                     </button>
+
                   </td>
                 </tr>
               ))
@@ -74,6 +86,7 @@ const mapStateToProps = (state) => ({
 });
 
 Table.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   expenses: PropTypes.arrayOf(PropTypes.shape({ value: PropTypes.string })).isRequired,
 };
 

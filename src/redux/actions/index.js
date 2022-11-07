@@ -10,6 +10,11 @@ export const expenseChange = (expenses) => ({
   expenses,
 });
 
+export const expenseEdit = (expenses) => ({
+  type: 'EXPENSES_EDIT',
+  expenses,
+});
+
 export function getApiDataCurrencies(currencies) {
   return {
     type: 'API_DATA_CURRENCIES',

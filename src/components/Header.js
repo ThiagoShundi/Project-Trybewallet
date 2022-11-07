@@ -20,7 +20,7 @@ class Header extends Component {
     ));
 
     const sumValor = expenses.length !== 0
-      ? (values.reduce((acc, val) => acc + val)).toFixed(2) : 0;
+      ? (values.reduce((acc, val) => acc + val)) : 0;
 
     return (
       <>
@@ -30,7 +30,7 @@ class Header extends Component {
           Total despesas:
           {' '}
           <span data-testid="total-field">
-            { sumValor }
+            { sumValor.toFixed(2) }
           </span>
         </div>
         <div data-testid="header-currency-field">{ exchange }</div>
