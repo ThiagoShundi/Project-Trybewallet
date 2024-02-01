@@ -12,12 +12,12 @@ This project was developed in the back-end course, with the proposal to develop 
 
 <ul>
 
-<li>Create a Redux store in React applications;</li>
-<li>Create reducers in Redux in React applications;</li>
-<li>Create actions in Redux in React applications;</li>
-<li>Create dispatchers in Redux in React applications;</li>
+<li>Use a Redux store in React applications;</li>
+<li>Use reducers in Redux in React applications;</li>
+<li>Use actions in Redux in React applications;</li>
+<li>Use dispatchers in Redux in React applications;</li>
 <li>Connect Redux to React components;</li>
-<li>Create asynchronous actions in your React application that uses Redux.;</li>
+<li>Use asynchronous actions in your React application that uses Redux.;</li>
 
 </ul>
 
